@@ -9,6 +9,7 @@ import torch
 from jaxtyping import Bool, Float, Int
 from torch import Tensor
 
+from cs336_basics import DataLoader
 
 def run_linear(
     d_in: int,
@@ -415,7 +416,8 @@ def run_get_batch(
         is the sampled input sequences, and the second tuple item is the corresponding
         language modeling labels.
     """
-    raise NotImplementedError
+    data_loader = DataLoader(dataset, batch_size, context_length)
+    return data_loader.get_train_batch_data()
 
 
 def run_softmax(in_features: Float[Tensor, " ..."], dim: int) -> Float[Tensor, " ..."]:
