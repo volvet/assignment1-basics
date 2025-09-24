@@ -13,6 +13,7 @@ from cs336_basics import DataLoader
 from cs336_basics import Linear
 from cs336_basics import Embedding
 from cs336_basics import RMSNorm
+from cs336_basics import PositionWiseFeedForward
 
 def run_linear(
     d_in: int,
@@ -89,7 +90,11 @@ def run_swiglu(
     # swiglu.w1.weight.data = w1_weight
     # swiglu.w2.weight.data = w2_weight
     # swiglu.w3.weight.data = w3_weight
-    raise NotImplementedError
+    swiglu = PositionWiseFeedForward(d_model, d_ff)
+    swiglu.linear1.weight.data.copy_(w1_weight)
+    swiglu.linear2.weight.data.copy_(w2_weight)
+    swiglu.linear3.weight.data.copy_(w3_weight)
+    return swiglu(in_features)
 
 
 def run_scaled_dot_product_attention(
