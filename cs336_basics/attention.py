@@ -13,7 +13,7 @@ class ScaledDotProductAttention(torch.nn.Module):
         scores = torch.matmul(Q, K.transpose(-2, -1)) / np.sqrt(d_k)  # (batch_size, n_heads, seq_len, seq_len)
 
         if mask is not None:
-            scores = scores.masked_fill(mask, float("-inf"))
+            scores = scores.masked_fill(~mask, float("-inf"))
 
         attn_weights = self.softmax(scores)  # (batch_size, n_heads, seq_len, seq_len)
         output = torch.matmul(attn_weights, V)  # (batch_size, n_heads, seq_len, head_dim)
@@ -71,7 +71,7 @@ class MultiHeadSelfAttention(torch.nn.Module):
             q = self.rope(q, self.token_positions)
             k = self.rope(k, self.token_positions)
         casual_mask = torch.triu(torch.ones(seq_len, seq_len), diagonal=1).to(torch.bool)
-        out = self.attention(q, k, v, mask=casual_mask)
+        out = self.attention(q, k, v, mask=~casual_mask)
         out = out.transpose(1, 2)
         out = out.contiguous().view(batch_size, seq_len, self.d_model)
         return self.wo(out)
