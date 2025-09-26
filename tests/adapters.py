@@ -16,6 +16,7 @@ from cs336_basics import RMSNorm
 from cs336_basics import PositionWiseFeedForward
 from cs336_basics import RotaryPositionEmbedding
 from cs336_basics import ScaledDotProductAttention
+from cs336_basics import MultiHeadSelfAttention
 
 def run_linear(
     d_in: int,
@@ -152,7 +153,12 @@ def run_multihead_self_attention(
         Float[Tensor, " ... sequence_length d_out"]: Tensor with the output of running your optimized, batched multi-headed attention
         implementation with the given QKV projection weights and input features.
     """
-    raise NotImplementedError
+    model = MultiHeadSelfAttention(d_model, num_heads, use_rope=False)
+    model.wq.weight.data.copy_(q_proj_weight)
+    model.wk.weight.data.copy_(k_proj_weight)
+    model.wv.weight.data.copy_(v_proj_weight)
+    model.wo.weight.data.copy_(o_proj_weight)
+    return model(in_features)
 
 
 def run_multihead_self_attention_with_rope(
@@ -192,7 +198,12 @@ def run_multihead_self_attention_with_rope(
         Float[Tensor, " ... sequence_length d_out"]: Tensor with the output of running your optimized, batched multi-headed attention
         implementation with the given QKV projection weights and input features.
     """
-    raise NotImplementedError
+    model = MultiHeadSelfAttention(d_model, num_heads, use_rope=True, theta=theta, max_seq_len=max_seq_len, token_positions=token_positions)
+    model.wq.weight.data.copy_(q_proj_weight)
+    model.wk.weight.data.copy_(k_proj_weight)
+    model.wv.weight.data.copy_(v_proj_weight)
+    model.wo.weight.data.copy_(o_proj_weight)
+    return model(in_features)
 
 
 def run_rope(
