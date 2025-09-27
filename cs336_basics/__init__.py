@@ -10,5 +10,6 @@ from .attention import (
     ScaledDotProductAttention,
     MultiHeadSelfAttention,
 )
+from .transformer import TransformerBlock
 
 __version__ = importlib.metadata.version("cs336_basics")

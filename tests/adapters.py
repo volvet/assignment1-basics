@@ -17,6 +17,7 @@ from cs336_basics import PositionWiseFeedForward
 from cs336_basics import RotaryPositionEmbedding
 from cs336_basics import ScaledDotProductAttention
 from cs336_basics import MultiHeadSelfAttention
+from cs336_basics import TransformerBlock
 
 def run_linear(
     d_in: int,
@@ -299,7 +300,17 @@ def run_transformer_block(
         Float[Tensor, "batch sequence_length d_model"] Tensor with the output of
         running the Transformer block on the input features while using RoPE.
     """
-    raise NotImplementedError
+    transformer_block = TransformerBlock(d_model, num_heads, d_ff, theta, max_seq_len, use_rope=True)
+    transformer_block.attn.wq.weight.data.copy_(weights["attn.q_proj.weight"])
+    transformer_block.attn.wk.weight.data.copy_(weights["attn.k_proj.weight"])
+    transformer_block.attn.wv.weight.data.copy_(weights["attn.v_proj.weight"])
+    transformer_block.attn.wo.weight.data.copy_(weights["attn.output_proj.weight"])
+    transformer_block.rms1.weight.data.copy_(weights["ln1.weight"])
+    transformer_block.ffn.linear1.weight.data.copy_(weights["ffn.w1.weight"])
+    transformer_block.ffn.linear2.weight.data.copy_(weights["ffn.w2.weight"])
+    transformer_block.ffn.linear3.weight.data.copy_(weights["ffn.w3.weight"])
+    transformer_block.rms2.weight.data.copy_(weights["ln2.weight"])
+    return transformer_block(in_features)
 
 
 def run_transformer_lm(
