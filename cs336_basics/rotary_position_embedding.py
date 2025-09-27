@@ -21,8 +21,14 @@ class RotaryPositionEmbedding(torch.nn.Module):
         self.register_buffer("sin_cached", sinusoid_inp.sin(), persistent=False)
 
     def forward(self, x : torch.Tensor, token_position : int) -> torch.Tensor:
+        if token_position is None:
+            token_position = torch.arange(self.max_seq_len, device=x.device)
         cos = self.cos_cached[token_position]
         sin = self.sin_cached[token_position]
+
+        if cos.shape[-2] > x.shape[-2]:
+            cos = cos[:x.shape[-2], :]
+            sin = sin[:x.shape[-2], :]
         cos = cos.unsqueeze(0)
         sin = sin.unsqueeze(0)
         x1 = x[..., 0::2]
