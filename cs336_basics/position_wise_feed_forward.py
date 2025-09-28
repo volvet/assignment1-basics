@@ -1,6 +1,11 @@
 import numpy as np
 import torch
 
+
+def silu(x : torch.Tensor) -> torch.Tensor:
+    #return x * torch.sigmoid(x)
+    return x/(1 + torch.exp(-x))
+
 class PositionWiseFeedForward(torch.nn.Module):
     def __init__(self, 
                  d_model : int, 
@@ -19,9 +24,6 @@ class PositionWiseFeedForward(torch.nn.Module):
         self.linear2.reset_parameters()
         self.linear3.reset_parameters()
 
-    def silu(self, x : torch.Tensor) -> torch.Tensor:
-        # return x / (1 - torch.exp(-x))
-        return x * torch.sigmoid(x)
 
     def forward(self, x : torch.Tensor) -> torch.Tensor:
-        return self.linear2(self.silu(self.linear1(x)) * self.linear3(x))
+        return self.linear2(silu(self.linear1(x)) * self.linear3(x))
