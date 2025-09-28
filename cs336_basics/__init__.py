@@ -19,4 +19,6 @@ from .transformer import (
     TransformerLM,
 )
 
+from .cross_entropy import cross_entropy_loss
+
 __version__ = importlib.metadata.version("cs336_basics")
