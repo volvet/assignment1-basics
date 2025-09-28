@@ -10,6 +10,7 @@ from .position_wise_feed_forward import (
 )
 from .rotary_position_embedding import RotaryPositionEmbedding
 from .attention import (
+    softmax,
     ScaledDotProductAttention,
     MultiHeadSelfAttention,
 )
@@ -17,5 +18,7 @@ from .transformer import (
     TransformerBlock,
     TransformerLM,
 )
+
+from .cross_entropy import cross_entropy_loss
 
 __version__ = importlib.metadata.version("cs336_basics")

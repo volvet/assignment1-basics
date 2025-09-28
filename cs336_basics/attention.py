@@ -3,6 +3,11 @@ import torch
 import torch.nn as nn
 from .rotary_position_embedding import RotaryPositionEmbedding
 
+
+def softmax(x : torch.Tensor, dim: int) -> torch.Tensor:
+    return torch.nn.functional.softmax(x, dim=dim)
+
+
 class ScaledDotProductAttention(torch.nn.Module):
     def __init__(self, device: torch.device = None, dtype: torch.dtype = None):
         super().__init__()
@@ -15,12 +20,9 @@ class ScaledDotProductAttention(torch.nn.Module):
         if mask is not None:
             scores = scores.masked_fill(~mask, float("-inf"))
 
-        attn_weights = self.softmax(scores)  # (batch_size, n_heads, seq_len, seq_len)
+        attn_weights = softmax(scores, dim=-1)  # (batch_size, n_heads, seq_len, seq_len)
         output = torch.matmul(attn_weights, V)  # (batch_size, n_heads, seq_len, head_dim)
         return output
-
-    def softmax(self, x : torch.Tensor) -> torch.Tensor:
-        return torch.nn.functional.softmax(x, dim=-1)
 
 class MultiHeadSelfAttention(torch.nn.Module):
     def __init__(self,
