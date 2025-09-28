@@ -19,6 +19,9 @@ from .transformer import (
     TransformerLM,
 )
 
-from .cross_entropy import cross_entropy_loss
+from .utils import (
+    cross_entropy_loss,
+    clip_gradients,
+)
 
 __version__ = importlib.metadata.version("cs336_basics")

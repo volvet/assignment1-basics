@@ -15,3 +15,11 @@ def cross_entropy_loss(input: torch.Tensor, target: torch.Tensor) -> torch.Tenso
     log_probs = torch.nn.functional.log_softmax(input, dim=-1)
     loss = torch.nn.functional.nll_loss(log_probs, target, reduction='mean')
     return loss
+
+def clip_gradients(parameters : torch.nn.Parameter, max_l2_norm : float) -> None:
+    parameters_with_grad = [p for p in parameters if p.grad is not None]
+    total_norm = torch.sqrt(sum(torch.sum(p.grad.data.pow(2)) for p in parameters_with_grad))
+    clip_coef = max_l2_norm / (total_norm + 1e-9)
+    if clip_coef < 1:
+        for p in parameters_with_grad:
+            p.grad.data.mul_(clip_coef)
