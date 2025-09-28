@@ -9,16 +9,19 @@ import torch
 from jaxtyping import Bool, Float, Int
 from torch import Tensor
 
-from cs336_basics import DataLoader
-from cs336_basics import Linear
-from cs336_basics import Embedding
-from cs336_basics import RMSNorm
-from cs336_basics import PositionWiseFeedForward
-from cs336_basics import RotaryPositionEmbedding
-from cs336_basics import ScaledDotProductAttention
-from cs336_basics import MultiHeadSelfAttention
-from cs336_basics import TransformerBlock
-from cs336_basics import TransformerLM
+from cs336_basics import (
+    DataLoader,
+    Linear,
+    Embedding,
+    RMSNorm,
+    PositionWiseFeedForward,
+    silu,
+    RotaryPositionEmbedding,
+    ScaledDotProductAttention,
+    MultiHeadSelfAttention,
+    TransformerBlock,
+    TransformerLM,
+)
 
 def run_linear(
     d_in: int,
@@ -448,7 +451,7 @@ def run_silu(in_features: Float[Tensor, " ..."]) -> Float[Tensor, " ..."]:
         Float[Tensor,"..."]: of with the same shape as `in_features` with the output of applying
         SiLU to each element.
     """
-    raise NotImplementedError
+    return silu(in_features)
 
 
 def run_get_batch(
