@@ -10,6 +10,7 @@ from .position_wise_feed_forward import (
 )
 from .rotary_position_embedding import RotaryPositionEmbedding
 from .attention import (
+    softmax,
     ScaledDotProductAttention,
     MultiHeadSelfAttention,
 )
