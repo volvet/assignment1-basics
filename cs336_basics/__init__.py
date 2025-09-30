@@ -19,6 +19,8 @@ from .transformer import (
     TransformerLM,
 )
 
+from .adamw import ADAMW
+
 from .utils import (
     cross_entropy_loss,
     clip_gradients,
