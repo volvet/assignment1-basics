@@ -25,6 +25,7 @@ from cs336_basics import (
     cross_entropy_loss,
     clip_gradients,
     ADAMW,
+    lr_cosine_schedule,
 )
 
 def run_linear(
@@ -560,7 +561,7 @@ def run_get_lr_cosine_schedule(
     Returns:
         Learning rate at the given iteration under the specified schedule.
     """
-    raise NotImplementedError
+    return lr_cosine_schedule(it, max_learning_rate, min_learning_rate, warmup_iters, cosine_cycle_iters)
 
 
 def run_save_checkpoint(

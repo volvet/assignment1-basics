@@ -24,6 +24,7 @@ from .adamw import ADAMW
 from .utils import (
     cross_entropy_loss,
     clip_gradients,
+    lr_cosine_schedule,
 )
 
 __version__ = importlib.metadata.version("cs336_basics")
