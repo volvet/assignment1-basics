@@ -46,3 +46,9 @@ class ADAMW(torch.optim.Optimizer):
                 p.data.add_(p.data, alpha=-group["lr"] * group["weight_decay"])
 
         return loss
+
+    def state_dict(self) -> dict[str, any]:
+        """
+        Returns the state of the optimizer as a :class:`dict`.
+        """
+        return super().state_dict()

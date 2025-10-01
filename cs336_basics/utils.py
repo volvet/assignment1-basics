@@ -1,3 +1,5 @@
+import os
+from typing import BinaryIO, IO
 import numpy as np
 import torch
 
@@ -41,3 +43,33 @@ def lr_cosine_schedule(current_iter: int,
     cosine_decay = (1 + np.cos(np.pi *(current_iter - warmup_iters) / (cosine_cycle_iters - warmup_iters))) / 2.0
     lr = min_learning_rate + (max_learning_rate - min_learning_rate) * cosine_decay
     return lr
+
+def save_checkpoint(model: torch.nn.Module, 
+                    optimizer: torch.optim.Optimizer, 
+                    iteration: int,
+                    path: str | os.PathLike | BinaryIO | IO[bytes]) -> None:
+    checkpoint = {
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'iteration': iteration
+    }
+
+    if isinstance(path, (str, os.PathLike)):
+        with open(path, 'wb') as f:
+            torch.save(checkpoint, f)
+    else:
+        torch.save(checkpoint, path)
+
+def load_checkpoint(model: torch.nn.Module,
+                    optimizer: torch.optim.Optimizer,
+                    path: str | os.PathLike | BinaryIO | IO[bytes])-> int:
+    if isinstance(path, (str, os.PathLike)):
+        with open(path, 'rb' ) as f:
+            checkpoint = torch.load(f)
+    else:
+        checkpoint = torch.load(path)
+
+    model.load_state_dict(checkpoint['model_state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    iteration = checkpoint['iteration']
+    return iteration
