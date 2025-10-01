@@ -25,6 +25,8 @@ from .utils import (
     cross_entropy_loss,
     clip_gradients,
     lr_cosine_schedule,
+    save_checkpoint,
+    load_checkpoint,
 )
 
 __version__ = importlib.metadata.version("cs336_basics")
