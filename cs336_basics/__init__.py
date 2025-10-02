@@ -18,9 +18,8 @@ from .transformer import (
     TransformerBlock,
     TransformerLM,
 )
-
 from .adamw import ADAMW
-
+from .tokenizer import Tokenizer, BPETokenizer
 from .utils import (
     cross_entropy_loss,
     clip_gradients,
