@@ -19,7 +19,7 @@ from .transformer import (
     TransformerLM,
 )
 from .adamw import ADAMW
-from .tokenizer import Tokenizer, BPETokenizer
+from .tokenizer import Tokenizer, BPETokenizer, train_bpe
 from .utils import (
     cross_entropy_loss,
     clip_gradients,
