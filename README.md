@@ -48,3 +48,7 @@ gunzip owt_valid.txt.gz
 cd ..
 ```
 
+### All Test Passed
+<img width="1728" height="805" alt="Snapshot" src="https://github.com/user-attachments/assets/c25103fa-d3f8-4cdb-8a64-a8298844cbd7" />
+
+
